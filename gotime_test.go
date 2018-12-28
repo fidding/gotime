@@ -35,36 +35,17 @@ var ParseMapTest = map[string]string{
 	"ss": "05",
 }
 
-func TestNow(t *testing.T) {
-	fmt.Print(Now())
-}
-
-func TestNew(t *testing.T) {
-	now := Now()
-	fmt.Println(New(now))
-}
-
 // 测试日期格式化
-func TestGoTime_Parser(t *testing.T) {
+func TestGoTime_Parse(t *testing.T) {
 	gotime := New(Now())
 	for format, _ := range ParseMapTest {
 		fmt.Print(format + ": ")
-		if res, err := gotime.Parser(format); err != nil {
+		if res, err := gotime.Parse(format); err != nil {
 			fmt.Println(err.Error())
 		} else {
 			fmt.Println(res)
 		}
 	}
-}
-
-func TestToday(t *testing.T) {
-	res := Today()
-	fmt.Println(res)
-}
-
-func TestYeaterday(t *testing.T) {
-	res := Yeaterday()
-	fmt.Println(res)
 }
 
 func TestGoTime_AddHours(t *testing.T) {
@@ -84,5 +65,10 @@ func TestGoTime_AddMonths(t *testing.T) {
 
 func TestGoTime_AddYears(t *testing.T) {
 	res := New(Now()).AddYears(-1)
+	fmt.Println(res)
+}
+
+func TestGoTime_Timestamp(t *testing.T) {
+	res := New(Now()).Timestamp()
 	fmt.Println(res)
 }

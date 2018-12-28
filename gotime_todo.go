@@ -1,7 +1,7 @@
 package gotime
 
-// TODO: tomorrow()
+// DONE: tomorrow()
 // TODO: 日期比较
-// TODO: 日期加减
+// DONE: 日期加减
 // TODO: diffForHumans
 // TODO: 标准化测试
