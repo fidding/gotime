@@ -1,24 +1,25 @@
 package gotime
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
 	"time"
 )
 
-type GoTime struct{
+type GoTime struct {
 	time.Time
 }
 
 // 日期格式
 var ParseMap = map[string]string{
 	"yyyy": "2006",
-	"MM": "01",
-	"dd": "02",
-	"HH": "15",
-	"mm": "04",
-	"ss": "05",
+	"MM":   "01",
+	"dd":   "02",
+	"HH":   "15",
+	"mm":   "04",
+	"ss":   "05",
 }
 
 // 初始化
@@ -53,7 +54,7 @@ func Tomorrow() (tomorror *GoTime) {
 // 返回今日时间
 func Today() *GoTime {
 	dateStr := time.Now().Format("2006-01-02")
-	t, _ :=  time.Parse("2006-01-02", dateStr)
+	t, _ := time.Parse("2006-01-02", dateStr)
 	return &GoTime{t}
 }
 
@@ -112,7 +113,53 @@ func (goTime *GoTime) TimeZone(zone string) (res *GoTime) {
 }
 
 // 日期转为时间戳
-func (goTime *GoTime) Timestamp() (timestamp int64){
+func (goTime *GoTime) Timestamp() (timestamp int64) {
 	timestamp = goTime.Unix()
 	return timestamp
+}
+
+// 获取日期集合
+var DateSetDimension = map[string]int64{
+	"day": 86400,
+	"hour": 3600,
+}
+
+// 计算日期集合
+// @params startTime 开始时间戳
+// @params startTime 结束时间戳
+// @params dimension 日期间隔 如:day/hour
+// @params format 日期格式 如:yyyy-MM-dd HH ...
+// @params timeZone  时区
+// @res dateSet 日期切片集合
+// @res err 错误消息
+func GetDateSetFromTimestamp(startTime int64, endTime int64, dimension string, format string, timeZone string) (dateSet []string, err error){
+	interval := DateSetDimension[dimension]
+	if interval == 0 {
+		err =  errors.New("日期间隔只允许day,hour")
+		return
+	}
+	if timeZone == "" {
+		timeZone = "Local"
+	}
+	// 判断开始时间与结束时间
+	if startTime > endTime {
+		err = errors.New("开始时间戳大于结束时间")
+		return
+	}
+
+	// 计算日期集合
+	for {
+		if date, err := New(time.Unix(startTime, 0)).TimeZone(timeZone).Parse(format); err != nil {
+			fmt.Println(err)
+			break
+		} else {
+			dateSet = append(dateSet, date)
+		}
+		if  startTime + interval  > endTime {
+			// 计算结束
+			break
+		}
+		startTime = startTime + interval
+	}
+	return dateSet, nil
 }
