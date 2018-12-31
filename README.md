@@ -61,7 +61,7 @@ gotime.GetDateSetFromTimestamp(1546099200, 1546114200, "hour", "yyyy-MM-dd HH", 
 
 // 返回1546099200到1546242692按天切片集合
 // 结果集合["2018-12-30", "2018-12-31"]
-GetDateSetFromTimestamp(1546099200, 1546242692, "day", "yyyy-MM-dd", "Local")
+gotime.GetDateSetFromTimestamp(1546099200, 1546242692, "day", "yyyy-MM-dd", "Local")
 ``` 
 
 # Author
