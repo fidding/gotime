@@ -85,32 +85,56 @@ var wantDay = []string{
 	"2018-12-30",
 	"2018-12-31",
 }
+var wantMonth = []string{
+	"2018-12",
+	"2019-01",
+}
 func TestGoTime_GetDateSetFromTimestamp(t *testing.T) {
-	got, err := GetDateSetFromTimestamp(1546099200, 1546114200, "hour", "yyyy-MM-dd HH","")
+	// 检测按小时切片
+	got, err := GetDateSetFromTimestamp(1546099200, 1546114200, "hour", "yyyy-MM-dd HH", "")
 	if err != nil {
 		fmt.Println(err)
 	}
 	if len(got) != len(wantHour) {
 		t.Errorf("got %v want %v given", got, wantHour)
-	}
-	for i := range got {
-		if got[i] != wantHour[i] {
-			t.Errorf("got %v want %v given", got, wantHour)
-			break
+	} else {
+		for i := range got {
+			if got[i] != wantHour[i] {
+				t.Errorf("got %v want %v given", got, wantHour)
+				break
+			}
 		}
 	}
 
-	got2, err := GetDateSetFromTimestamp(1546099200, 1546242692, "day", "yyyy-MM-dd","")
+	// 检测按天切片
+	got2, err := GetDateSetFromTimestamp(1546099200, 1546242692, "day", "yyyy-MM-dd", "")
 	if err != nil {
-		fmt.Println(err)
+		t.Errorf("got %v want %v given", got2, wantDay)
 	}
 	if len(got2) != len(wantDay) {
-		t.Errorf("got %v want %v given", got, wantHour)
+		t.Errorf("got %v want %v given", got2, wantDay)
+	} else {
+		for i := range got2 {
+			if got2[i] != wantDay[i] {
+				t.Errorf("got %v want %v given", got2, wantDay)
+				break
+			}
+		}
 	}
-	for i := range got2 {
-		if got2[i] != wantDay[i] {
-			t.Errorf("got %v want %v given", got, wantHour)
-			break
+
+	// 检测按月切片
+	got3, err := GetDateSetFromTimestamp(1546099200, 1546272000, "month", "yyyy-MM", "")
+	if err != nil {
+		t.Errorf("got %v want %v given", got3, wantMonth)
+	}
+	if len(got3) != len(wantMonth) {
+		t.Errorf("got %v want %v given", got3, wantMonth)
+	} else {
+		for i := range got3 {
+			if got3[i] != wantMonth[i] {
+				t.Errorf("got %v want %v given", got3, wantMonth)
+				break
+			}
 		}
 	}
 }
