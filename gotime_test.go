@@ -35,6 +35,17 @@ var ParseMapTest = map[string]string{
 	"ss":    "05",
 }
 
+func TestNewParse(t *testing.T) {
+	var got, want int64
+	res := NewParse("yyyy-MM-dd HH", "2018-12-20 15", "Asia/Shanghai")
+	got = res.Unix()
+	want = 1545289200
+	if got != want {
+		t.Errorf("got %v want %v given", got, want)
+	}
+}
+
+
 
 // 测试日期格式化
 func TestGoTime_Parse(t *testing.T) {

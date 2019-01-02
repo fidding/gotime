@@ -27,11 +27,15 @@ func New(t time.Time) *GoTime {
 }
 
 // 初始化解析字符串日期
-func NewParse(layout string, value string) *GoTime {
+func NewParse(layout string, value string, timezone string) *GoTime {
+	if timezone == "" {
+		timezone = "Local"
+	}
 	for k, v := range ParseMap {
 		layout = strings.Replace(layout, k, v, -1)
 	}
-	t, _ := time.Parse(layout, value)
+	loc, _ := time.LoadLocation(timezone)
+	t, _ := time.ParseInLocation(layout, value, loc)
 	return &GoTime{t}
 }
 
@@ -134,31 +138,31 @@ var DateSetDimension = map[string]int8{
 // @params timeZone  时区
 // @res dateSet 日期切片集合
 // @res err 错误消息
-func GetDateSetFromTimestamp(startTime int64, endTime int64, dimension string, format string, timeZone string) (dateSet []string, err error){
+func GetDateSetFromTimestamp(startTime int64, endTime int64, dimension string, format string, timezone string) (dateSet []string, err error){
 	if ok := DateSetDimension[dimension]; ok == 0 {
 		err =  errors.New("日期间隔只允许month, day, hour类型")
 		return
 	}
-	if timeZone == "" {
-		timeZone = "Local"
+	if timezone == "" {
+		timezone = "Local"
 	}
 	if startTime > endTime {
 		err = errors.New("开始时间戳大于结束时间")
 		return
 	}
-	startDate := New(time.Unix(startTime, 0)).TimeZone(timeZone)
+	startDate := New(time.Unix(startTime, 0)).TimeZone(timezone)
 
 	// 获取格式化后的结束时间戳
-	endDate, err := New(time.Unix(endTime, 0)).TimeZone(timeZone).Parse(format)
-	endTimestamp := NewParse(format, endDate).TimeZone(timeZone).Unix()
+	endDate, err := New(time.Unix(endTime, 0)).TimeZone(timezone).Parse(format)
+	endTimestamp := NewParse(format, endDate, timezone).Unix()
 
 	// 计算日期集合
 	for {
 		dateStr, _ := startDate.Parse(format)
 
 		// 获取格式化后的累加时间戳
-		startDateParse, _ := startDate.TimeZone(timeZone).Parse(format)
-		startTimestamp := NewParse(format, startDateParse).TimeZone(timeZone).Unix()
+		startDateParse, _ := startDate.TimeZone(timezone).Parse(format)
+		startTimestamp := NewParse(format, startDateParse, timezone).Unix()
 
 		// 比较日期大小
 		if startTimestamp > endTimestamp {
