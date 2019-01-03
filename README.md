@@ -33,6 +33,23 @@ gotime.New(date)
 date := "1991-09-17"
 gotime.NewParse("yyyy-MM-dd", date, "Local")
 ```
+
+#### 日期获取
+```go
+// 获取年/月/日/时/分/秒/纳秒
+// year/month/day/hour/minute/second/nanosecond
+goTime.Get("year")
+// or
+goTime.GetYear()
+goTime.GetMonth()
+goTime.GetDay()
+goTime.GetHour()
+goTime.GetMinute()
+goTime.GetSecond()
+goTime.GetNanoSecond()
+
+```
+
 #### 日期格式化
 ```go
 // 格式化

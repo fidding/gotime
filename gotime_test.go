@@ -45,8 +45,6 @@ func TestNewParse(t *testing.T) {
 	}
 }
 
-
-
 // 测试日期格式化
 func TestGoTime_Parse(t *testing.T) {
 	gotime := New(Now())
@@ -100,6 +98,7 @@ var wantMonth = []string{
 	"2018-12",
 	"2019-01",
 }
+
 func TestGoTime_GetDateSetFromTimestamp(t *testing.T) {
 	// 检测按小时切片
 	got, err := GetDateSetFromTimestamp(1546099200, 1546114200, "hour", "yyyy-MM-dd HH", "")
@@ -147,5 +146,47 @@ func TestGoTime_GetDateSetFromTimestamp(t *testing.T) {
 				break
 			}
 		}
+	}
+}
+
+// 测试获取年月日时分秒获取
+func TestGoTime_Get(t *testing.T) {
+	testTime := NewParse("yyyy-MM-dd HH:mm:ss", "2018-02-01 10:23:59", "")
+	// 年
+	got := testTime.Get("year")
+	want := 2018
+	if got != want {
+		t.Errorf("test year got %v want %v given", got, want)
+	}
+	// 月
+	got1 := testTime.Get("month")
+	want1 := 2
+	if got1 != want1 {
+		t.Errorf("test month got %v want %v given", got1, want1)
+	}
+	// 日
+	got2 := testTime.Get("day")
+	want2 := 1
+	if got2 != want2 {
+		t.Errorf("test day got %v want %v given", got2, want2)
+	}
+	// 时
+	got3 := testTime.Get("hour")
+	want3 := 10
+	fmt.Println(got3, want3)
+	if got3 != want3 {
+		t.Errorf("test hour got %v want %v given", got3, want3)
+	}
+	// 分
+	got4 := testTime.Get("minute")
+	want4 := 23
+	if got4 != want4 {
+		t.Errorf("test minute got %v want %v given", got4, want4)
+	}
+	// 秒
+	got5 := testTime.Get("second")
+	want5 := 59
+	if got5 != want5 {
+		t.Errorf("test second got %v want %v given", got5, want5)
 	}
 }

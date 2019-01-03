@@ -123,11 +123,94 @@ func (goTime *GoTime) Timestamp() (timestamp int64) {
 	return timestamp
 }
 
+// 获取指定时间单位
+func (goTime *GoTime) Get(dimension string) (res int) {
+	switch dimension {
+	case "year":
+		return goTime.GetYear()
+	case "month":
+		return goTime.GetMonth()
+	case "day":
+		return goTime.GetDay()
+	case "hour":
+		return goTime.GetHour()
+	case "minute":
+		return goTime.GetMinute()
+	case "second":
+		return goTime.GetSecond()
+	case "nanosecond":
+		return goTime.GetNanosecond()
+	default:
+		return 0
+	}
+}
+
+// 获取年份
+func (goTime *GoTime) GetYear() (res int) {
+	res = goTime.Year()
+	return
+}
+
+var Months = map[string]int{
+	"January":   1,
+	"February":  2,
+	"March":     3,
+	"April":     4,
+	"May":       5,
+	"June":      6,
+	"July":      7,
+	"August":    8,
+	"September": 9,
+	"October":   10,
+	"November":  11,
+	"December":  12,
+}
+
+// 获取月份
+func (goTime *GoTime) GetMonth() (res int) {
+	res = Months[goTime.Month().String()]
+	return
+
+}
+
+// 获取小时
+func (goTime *GoTime) GetHour() (res int) {
+	res = goTime.Hour()
+	return
+}
+
+// 获取分钟
+func (goTime *GoTime) GetMinute() (res int) {
+	res = goTime.Minute()
+	return
+
+}
+
+// 获取秒数
+func (goTime *GoTime) GetSecond() (res int) {
+	res = goTime.Second()
+	return
+
+}
+
+// 获取纳秒
+func (goTime *GoTime) GetNanosecond() (res int) {
+	res = goTime.Nanosecond()
+	return
+}
+
+// 获取天数
+func (goTime *GoTime) GetDay() (res int) {
+	res = goTime.Day()
+	return
+
+}
+
 // 获取日期集合
 var DateSetDimension = map[string]int8{
 	"month": 1,
-	"day": 1,
-	"hour": 1,
+	"day":   1,
+	"hour":  1,
 }
 
 // 计算日期集合
@@ -138,9 +221,9 @@ var DateSetDimension = map[string]int8{
 // @params timeZone  时区
 // @res dateSet 日期切片集合
 // @res err 错误消息
-func GetDateSetFromTimestamp(startTime int64, endTime int64, dimension string, format string, timezone string) (dateSet []string, err error){
+func GetDateSetFromTimestamp(startTime int64, endTime int64, dimension string, format string, timezone string) (dateSet []string, err error) {
 	if ok := DateSetDimension[dimension]; ok == 0 {
-		err =  errors.New("日期间隔只允许month, day, hour类型")
+		err = errors.New("日期间隔只允许month, day, hour类型")
 		return
 	}
 	if timezone == "" {
@@ -174,7 +257,7 @@ func GetDateSetFromTimestamp(startTime int64, endTime int64, dimension string, f
 			startDate = startDate.AddMonths(1)
 		} else if dimension == "day" {
 			startDate = startDate.AddDays(1)
-		} else  if dimension == "hour" {
+		} else if dimension == "hour" {
 			startDate = startDate.AddHours(1)
 		} else {
 			break
