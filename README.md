@@ -79,6 +79,14 @@ date := gotime.New(time.Now()).AddDays(-1)
 date := gotime.New(time.Now()).AddHours(1)
 ```
 
+#### 日期比较
+```go
+//  res 大于1小于-1等于0
+date := gotime.NewParse("yyyy-MM-dd HH:mm:ss", "1991-09-17 00:00:00", "")
+date2 := gotime.NewParse("yyyy-MM-dd HH:mm:ss", "1991-09-17 00:00:01", "")
+res := date.CompariTo(date2)
+```
+
 #### 日期切片计算
 ```go
 // 返回中国时间2018-12-30 00:00:00到2018-12-30 04:10:00

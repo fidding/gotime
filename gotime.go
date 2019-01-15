@@ -7,11 +7,12 @@ import (
 	"time"
 )
 
+//GoTime 基本结构
 type GoTime struct {
 	time.Time
 }
 
-// 日期格式
+//ParseMap 日期格式
 var ParseMap = map[string]string{
 	"yyyy": "2006",
 	"MM":   "01",
@@ -21,12 +22,12 @@ var ParseMap = map[string]string{
 	"ss":   "05",
 }
 
-// 初始化
+//New 初始化
 func New(t time.Time) *GoTime {
 	return &GoTime{t}
 }
 
-// 初始化解析字符串日期
+//NewParse 初始化解析字符串日期
 func NewParse(layout string, value string, timezone string) *GoTime {
 	if timezone == "" {
 		timezone = "Local"
@@ -39,32 +40,32 @@ func NewParse(layout string, value string, timezone string) *GoTime {
 	return &GoTime{t}
 }
 
-// 返回当前日期
+//Now 返回当前日期
 func Now() (now time.Time) {
 	now = time.Now()
 	return
 }
 
-// 返回昨天日期
+//Yeaterday 返回昨天日期
 func Yeaterday() (yesterday *GoTime) {
 	yesterday = New(time.Now()).AddDays(-1)
 	return
 }
 
-// 返回明天日期
+//Tomorrow 返回明天日期
 func Tomorrow() (tomorror *GoTime) {
 	tomorror = New(time.Now()).AddDays(1)
 	return
 }
 
-// 返回今日时间
+//Today 返回今日时间
 func Today() *GoTime {
 	dateStr := time.Now().Format("2006-01-02")
 	t, _ := time.Parse("2006-01-02", dateStr)
 	return &GoTime{t}
 }
 
-// 日期格式化
+//Parse 日期格式化
 func (goTime *GoTime) Parse(format string) (parse string, err error) {
 	// 解析格式
 	err = nil
@@ -75,7 +76,7 @@ func (goTime *GoTime) Parse(format string) (parse string, err error) {
 	return
 }
 
-// 加减小时
+//AddHours 加减小时
 func (goTime *GoTime) AddHours(number int) (res *GoTime) {
 	m, _ := time.ParseDuration(strconv.Itoa(number) + "h")
 	date := goTime.Add(m)
@@ -83,47 +84,47 @@ func (goTime *GoTime) AddHours(number int) (res *GoTime) {
 	return
 }
 
-// 加减天数
+//AddDays 加减天数
 func (goTime *GoTime) AddDays(number int) (res *GoTime) {
 	date := goTime.AddDate(0, 0, number)
 	res = &GoTime{date}
 	return
 }
 
-// 加减月数
+//AddMonths 加减月数
 func (goTime *GoTime) AddMonths(number int) (res *GoTime) {
 	date := goTime.AddDate(0, number, 0)
 	res = &GoTime{date}
 	return
 }
 
-// 加减年数
+//AddYears 加减年数
 func (goTime *GoTime) AddYears(number int) (res *GoTime) {
 	date := goTime.AddDate(number, 0, 0)
 	res = &GoTime{date}
 	return res
 }
 
-// 转为字符串
+//toDateTimeString 转为字符串
 func (goTime *GoTime) toDateTimeString() (res string) {
 	res = goTime.String()
 	return
 }
 
-// 转换时区
+//TimeZone 转换时区
 func (goTime *GoTime) TimeZone(zone string) (res *GoTime) {
-	loc, _ := time.LoadLocation(zone)
+	loc,_ := time.LoadLocation(zone)
 	res = &GoTime{goTime.In(loc)}
 	return
 }
 
-// 日期转为时间戳
+//Timestamp 日期转为时间戳
 func (goTime *GoTime) Timestamp() (timestamp int64) {
 	timestamp = goTime.Unix()
 	return timestamp
 }
 
-// 获取指定时间单位
+//Get 获取指定时间单位
 func (goTime *GoTime) Get(dimension string) (res int) {
 	switch dimension {
 	case "year":
@@ -145,12 +146,13 @@ func (goTime *GoTime) Get(dimension string) (res int) {
 	}
 }
 
-// 获取年份
+//GetYear 获取年份
 func (goTime *GoTime) GetYear() (res int) {
 	res = goTime.Year()
 	return
 }
 
+//Months 月份字典
 var Months = map[string]int{
 	"January":   1,
 	"February":  2,
@@ -166,54 +168,51 @@ var Months = map[string]int{
 	"December":  12,
 }
 
-// 获取月份
+//GetMonth 获取月份
 func (goTime *GoTime) GetMonth() (res int) {
 	res = Months[goTime.Month().String()]
 	return
-
 }
 
-// 获取小时
+//GetHour 获取小时
 func (goTime *GoTime) GetHour() (res int) {
 	res = goTime.Hour()
 	return
 }
 
-// 获取分钟
+//GetMinute 获取分钟
 func (goTime *GoTime) GetMinute() (res int) {
 	res = goTime.Minute()
 	return
-
 }
 
-// 获取秒数
+//GetSecond 获取秒数
 func (goTime *GoTime) GetSecond() (res int) {
 	res = goTime.Second()
 	return
-
 }
 
-// 获取纳秒
+//GetNanosecond 获取纳秒
 func (goTime *GoTime) GetNanosecond() (res int) {
 	res = goTime.Nanosecond()
 	return
 }
 
-// 获取天数
+//GetDay 获取天数
 func (goTime *GoTime) GetDay() (res int) {
 	res = goTime.Day()
 	return
 
 }
 
-// 获取日期集合
+//DateSetDimension 获取日期集合
 var DateSetDimension = map[string]int8{
 	"month": 1,
 	"day":   1,
 	"hour":  1,
 }
 
-// 计算日期集合
+//GetDateSetFromTimestamp 计算日期集合
 // @params startTime 开始时间戳
 // @params startTime 结束时间戳
 // @params dimension 日期间隔 如:day/hour
@@ -263,6 +262,5 @@ func GetDateSetFromTimestamp(startTime int64, endTime int64, dimension string, f
 			break
 		}
 	}
-
 	return dateSet, nil
 }

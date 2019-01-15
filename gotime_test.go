@@ -48,7 +48,7 @@ func TestNewParse(t *testing.T) {
 // 测试日期格式化
 func TestGoTime_Parse(t *testing.T) {
 	gotime := New(Now())
-	for format, _ := range ParseMapTest {
+	for format := range ParseMapTest {
 		fmt.Print(format + ": ")
 		if res, err := gotime.Parse(format); err != nil {
 			fmt.Println(err.Error())
@@ -98,7 +98,6 @@ var wantMonth = []string{
 	"2018-12",
 	"2019-01",
 }
-
 func TestGoTime_GetDateSetFromTimestamp(t *testing.T) {
 	// 检测按小时切片
 	got, err := GetDateSetFromTimestamp(1546099200, 1546114200, "hour", "yyyy-MM-dd HH", "")
@@ -188,5 +187,28 @@ func TestGoTime_Get(t *testing.T) {
 	want5 := 59
 	if got5 != want5 {
 		t.Errorf("test second got %v want %v given", got5, want5)
+	}
+}
+
+//TestGoTime_CompariTo 测试日期比较
+func TestGoTime_CompariTo(t *testing.T) {
+	date := NewParse("yyyy-MM-dd HH:mm:ss", "1991-09-17 00:00:00", "")
+	time1 := NewParse("yyyy-MM-dd HH:mm:ss", "1991-09-17 00:00:01", "")
+	got1 := date.CompariTo(time1)
+	want1 := -1
+	if got1 != want1 {
+		t.Errorf("test compari 1 got %v want %v given", want1, got1)
+	}
+	time2 := NewParse("yyyy-MM-dd", "1991-09-17", "")
+	got2 := date.CompariTo(time2)
+	want2 := 0
+	if got2 != want2 {
+		t.Errorf("test compari 2 got %v want %v given", want2, got2)
+	}
+	time3 := NewParse("yyyy/MM/dd HH:mm:ss", "1991/09/16 00:00:00", "")
+	got3 := date.CompariTo(time3)
+	want3 := 1
+	if got3 != want3 {
+		t.Errorf("test compari 3 got %v want %v given", want3, got3)
 	}
 }
