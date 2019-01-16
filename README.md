@@ -62,6 +62,17 @@ goTime.GetNanoSecond()
 gotime, err := gotime.New(time.Now()).Parse("yyyy-MM-dd HH:mm:ss")
 ```
 
+#### 时间戳转日期
+```go
+// 时间戳转日期(秒)
+var timestamp int64
+timestamp = 685036800
+gotime := gotime.NewUnix(timestamp)
+// 纳秒时间戳转为日期
+timestamp = 685036800 * 1e9
+gotime := gotime.NewUnixNano(timestamp)
+```
+
 #### 时区转换
 ```go
 date := gotime.New(time.Now()).TimeZone("Local")
