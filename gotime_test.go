@@ -212,3 +212,27 @@ func TestGoTime_CompariTo(t *testing.T) {
 		t.Errorf("test compari 3 got %v want %v given", want3, got3)
 	}
 }
+
+
+//TestNewUnix 测试时间戳转日期
+func TestNewUnix(t *testing.T) {
+	var timestamp int64
+	timestamp = 685036800
+	got, _ := NewUnix(timestamp).Parse("yyyy-MM-dd HH:mm:ss")
+	fmt.Println(got)
+	want := "1991-09-17 00:00:00"
+	if got != want {
+		t.Errorf("test newUnix  got %v want %v given", want, got)
+	}
+}
+
+//TestNewUnixNano 测试时间戳转日期
+func TestNewUnixNano(t *testing.T) {
+	var timestamp int64
+	timestamp = 685036800 * 1e9
+	got, _ := NewUnixNano(timestamp).Parse("yyyy-MM-dd HH:mm:ss")
+	want := "1991-09-17 00:00:00"
+	if got != want {
+		t.Errorf("test newUnixNano  got %v want %v given", want, got)
+	}
+}

@@ -6,3 +6,4 @@ package gotime
 // TODO: diffForHumans
 // TODO: 标准化测试
 //DONE: 获取日期的年月日时分秒
+//TODO: 日期转换toSlice, toMap, toString

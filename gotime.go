@@ -27,6 +27,18 @@ func New(t time.Time) *GoTime {
 	return &GoTime{t}
 }
 
+//NewUnix 将时间戳秒转为日期
+func NewUnix(timestamp int64) *GoTime {
+	t := time.Unix(timestamp, 0)
+	return New(t)
+}
+
+//NewUnixNano 将纳秒时间戳转为日期
+func NewUnixNano(timestamp int64) *GoTime {
+	t := time.Unix(timestamp / 1e9, 0)
+	return New(t)
+}
+
 //NewParse 初始化解析字符串日期
 func NewParse(layout string, value string, timezone string) *GoTime {
 	if timezone == "" {
